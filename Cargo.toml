@@ -1,0 +1,23 @@
+[package]
+name = "tomi-web"
+version = "0.1.0"
+authors = ["Tim Patterson <tim.wanaka@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.68"
+wasm-bindgen-futures = "0.4.18"
+js-sys = "0.3.4"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+    "console",
+    "CanvasRenderingContext2d",
+    "HtmlCanvasElement",
+    "HtmlImageElement",
+    "HtmlAudioElement"
+]

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tomi</title>
+    <style>
+        body {
+            background-color: grey;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: black;
+        }
+    </style>
+    <script type="module">
+        import init, {Game} from "./tomi_web.js"
+
+        // Keyboard handlers to keep track of currently pressed keys,
+        var key_states = new Set();
+
+        document.addEventListener('keydown', (event) => {
+            key_states.add(event.keyCode);
+        }, false);
+        document.addEventListener('keyup', (event) => {
+            key_states.delete(event.keyCode);
+        }, false);
+
+        /**
+        * Helper to load an image and return a promise
+        **/
+        function load_image(src) {
+            var img = new Image();
+            var p = new Promise((resolve, reject) => {
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+            });
+            img.src = src;
+            return p;
+        }
+        window.load_image = load_image;
+
+        /**
+        * Helper to load an sound and return a promise
+        **/
+        function load_sound(src) {
+            var sound = new Audio();
+            var p = new Promise((resolve, reject) => {
+                sound.oncanplay = () => resolve(sound);
+                sound.onerror = reject;
+            });
+            sound.src = src;
+            return p;
+        }
+        window.load_sound = load_sound;
+
+        async function run() {
+            await init();
+            var game = await Game.new(document.getElementById("canvas").getContext("2d"));
+            setInterval(() => {
+                game.tick(Int16Array.from(key_states));
+            }, 10);
+
+            function render() {
+                game.render();
+                requestAnimationFrame(render);
+            }
+
+            requestAnimationFrame(render);
+        }
+        run();
+    </script>
+</head>
+<body>
+<canvas id="canvas" width="600", height="600"></canvas>
+</body>
+</html>
