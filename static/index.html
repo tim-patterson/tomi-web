@@ -59,11 +59,11 @@
             var game = await Game.new(document.getElementById("canvas").getContext("2d"));
             setInterval(() => {
                 game.tick(Int16Array.from(key_states));
-            }, 10);
+            }, 16);
 
             function render() {
-                game.render();
                 requestAnimationFrame(render);
+                game.render();
             }
 
             requestAnimationFrame(render);
